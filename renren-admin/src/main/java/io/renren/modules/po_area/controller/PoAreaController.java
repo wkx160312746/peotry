@@ -51,8 +51,11 @@ public class PoAreaController {
     @RequestMapping("/getCityListByProvinceId")
     public R getProvinceList(@RequestParam Map<String, Object> params) {
         String provinceId = String.valueOf(params.get("provinceId"));
+        if (StringUtils.isBlank(provinceId) || "null".equals(provinceId)) {
+            return R.error("参数为空");
+        }
         List<PoAreaEntity> cityList = poAreaService.list(new QueryWrapper<PoAreaEntity>()
-                .eq(StringUtils.isNotBlank(provinceId) && !"null".equals(provinceId), "parent_id", Integer.valueOf(provinceId)));
+                .eq( "parent_id", Integer.valueOf(provinceId)));
         return R.ok().put("list", cityList);
     }
 
