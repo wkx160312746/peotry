@@ -36,7 +36,6 @@ public class PoCommentController {
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("po_comment:pocomment:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = poCommentService.queryPage(params);
 

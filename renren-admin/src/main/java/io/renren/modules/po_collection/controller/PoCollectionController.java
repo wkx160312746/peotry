@@ -36,7 +36,6 @@ public class PoCollectionController {
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("po_collection:pocollection:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = poCollectionService.queryPage(params);
 
@@ -45,10 +44,9 @@ public class PoCollectionController {
 
 
     /**
-     * 信息
+     * 根据用户id 查询信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("po_collection:pocollection:info")
     public R info(@PathVariable("id") Long id){
         PoCollectionEntity poCollection = poCollectionService.getById(id);
 
@@ -59,7 +57,6 @@ public class PoCollectionController {
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("po_collection:pocollection:save")
     public R save(@RequestBody PoCollectionEntity poCollection){
         poCollectionService.save(poCollection);
 
@@ -70,7 +67,6 @@ public class PoCollectionController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("po_collection:pocollection:update")
     public R update(@RequestBody PoCollectionEntity poCollection){
         ValidatorUtils.validateEntity(poCollection);
         poCollectionService.updateById(poCollection);
@@ -82,7 +78,6 @@ public class PoCollectionController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("po_collection:pocollection:delete")
     public R delete(@RequestBody Long[] ids){
         poCollectionService.removeByIds(Arrays.asList(ids));
 

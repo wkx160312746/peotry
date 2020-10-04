@@ -1,9 +1,10 @@
 package io.renren.modules.po_article.controller;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.renren.common.validator.ValidatorUtils;
+import io.renren.modules.po_area.entity.PoAreaEntity;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,13 +30,29 @@ import io.renren.common.utils.R;
 @RestController
 @RequestMapping("po_article/poarticle")
 public class PoArticleController {
+
     @Autowired
     private PoArticleService poArticleService;
 
+
     @RequestMapping("/getHomePage")
     public R homePageList(){
-        PageUtils page = poArticleService.getHomePage();
-        return R.ok().put("page", page);
+        List<PoArticleEntity> hot =
+                poArticleService.list(new QueryWrapper<PoArticleEntity>().orderByDesc("evaluate").last("limit 5"));
+        Map<String, Object> map = new HashMap<>();
+        map.put("title", "热门景点");
+        map.put("content", hot);
+
+        List<PoArticleEntity> cold =
+                poArticleService.list(new QueryWrapper<PoArticleEntity>().orderByAsc("evaluate").last("limit 5"));
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("title", "冷门景点");
+        map1.put("content", cold);
+        List<Object> list = new ArrayList<>();
+        list.add(map);
+        list.add(map1);
+
+        return R.ok().put("page", list);
     }
     /**
      * 列表
@@ -43,7 +60,6 @@ public class PoArticleController {
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = poArticleService.queryPage(params);
-
         return R.ok().put("page", page);
     }
 
@@ -85,7 +101,6 @@ public class PoArticleController {
     @RequestMapping("/delete")
     public R delete(@RequestBody Long[] ids){
         poArticleService.removeByIds(Arrays.asList(ids));
-
         return R.ok();
     }
 

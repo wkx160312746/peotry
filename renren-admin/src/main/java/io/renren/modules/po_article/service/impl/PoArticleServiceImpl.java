@@ -26,10 +26,5 @@ public class PoArticleServiceImpl extends ServiceImpl<PoArticleDao, PoArticleEnt
         return new PageUtils(page);
     }
 
-    @Override
-    public PageUtils getHomePage() {
-
-        return null;
-    }
 
 }

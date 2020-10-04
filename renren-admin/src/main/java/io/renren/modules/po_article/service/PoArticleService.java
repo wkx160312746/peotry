@@ -17,6 +17,5 @@ public interface PoArticleService extends IService<PoArticleEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    PageUtils getHomePage();
 }
 

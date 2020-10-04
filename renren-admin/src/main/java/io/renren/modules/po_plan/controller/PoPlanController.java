@@ -36,7 +36,6 @@ public class PoPlanController {
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("po_plan:poplan:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = poPlanService.queryPage(params);
 
@@ -48,7 +47,6 @@ public class PoPlanController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("po_plan:poplan:info")
     public R info(@PathVariable("id") Long id){
         PoPlanEntity poPlan = poPlanService.getById(id);
 
@@ -59,7 +57,6 @@ public class PoPlanController {
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("po_plan:poplan:save")
     public R save(@RequestBody PoPlanEntity poPlan){
         poPlanService.save(poPlan);
 
