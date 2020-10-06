@@ -32,3 +32,6 @@ spring:
         wall:
           config:
             multi-statement-allow: true
+
+## 配置图片上传地址
+upImgUrl: D:/44/fileupload/
