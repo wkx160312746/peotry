@@ -2,7 +2,9 @@ package io.renren.modules.po_plan.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -27,7 +29,9 @@ public class PoPlanEntity implements Serializable {
 	/**
 	 * 开始时间
 	 */
-	private String startTime;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+	private Date startTime;
 	/**
 	 * 地点
 	 */
@@ -43,6 +47,8 @@ public class PoPlanEntity implements Serializable {
 	/**
 	 * 预估时间
 	 */
-	private String time;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+	private Date time;
 
 }

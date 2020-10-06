@@ -6,6 +6,7 @@ import java.util.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.renren.common.validator.ValidatorUtils;
 import io.renren.modules.po_area.entity.PoAreaEntity;
+import net.bytebuddy.description.type.TypeList;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -157,5 +158,37 @@ public class PoArticleController {
     public R upHtml(@RequestBody Map<String,String> map){
 
         return R.ok();
+    }
+
+    /**
+     * 获取分类文章
+     * @return
+     */
+    @RequestMapping("/getClassify")
+    public R getClassify(){
+        String[] name = {"","访名人","探画家","诗中景","画中游"};
+        List<Object> list = new ArrayList<>();
+
+        for (int i = 1; i <=4;i++){
+            Map<Object, Object> map = new HashMap<>();
+            List<PoArticleEntity> typeList = poArticleService.list(new QueryWrapper<PoArticleEntity>().eq("type",i));
+            map.put("title", name[i]);
+            map.put("content",typeList);
+            list.add(map);
+        }
+
+        return R.ok().put("pageList",list);
+    }
+
+    @RequestMapping("/getRankingList")
+    public R getRankingList(@RequestBody Map<String, Object> params){
+        String[] name = {"","访名人","探画家","诗中景","画中游"};
+        Integer type = (Integer) params.get("type");
+        System.out.println(type);
+        List<PoArticleEntity> list =
+                poArticleService.list(new QueryWrapper<PoArticleEntity>()
+                        .eq("type", type).orderByDesc("evaluate").last("limit 10"));
+
+        return R.ok().put("title",name[type]).put("content",list);
     }
 }

@@ -100,8 +100,8 @@ public class PoCommentController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids){
-        poCommentService.removeByIds(Arrays.asList(ids));
+    public R delete(@RequestBody Map map){
+        poCommentService.removeByMap(map);
 
         return R.ok();
     }
