@@ -70,6 +70,11 @@ public class PoCommentController {
         return R.ok().put("content", commentEntityList);
     }
 
+    @RequestMapping("/getListByArticleId/{id}")
+    public R getListByArticleId(@PathVariable("id") Long id){
+        return poCommentService.getListByArticleId(id);
+    }
+
     /**
      * 保存
      */
