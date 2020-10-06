@@ -1,9 +1,12 @@
 package io.renren.modules.po_collection.controller;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.renren.common.validator.ValidatorUtils;
+import io.renren.modules.po_area.entity.PoAreaEntity;
+import io.renren.modules.po_article.entity.PoArticleEntity;
+import io.renren.modules.po_article.service.PoArticleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +35,8 @@ public class PoCollectionController {
     @Autowired
     private PoCollectionService poCollectionService;
 
+    @Autowired
+    private PoArticleService poArticleService;
     /**
      * 列表
      */
@@ -44,13 +49,20 @@ public class PoCollectionController {
 
 
     /**
-     * 根据用户id 查询信息
+     * 根据用户id 查询收藏信息
      */
     @RequestMapping("/info/{id}")
     public R info(@PathVariable("id") Long id){
-        PoCollectionEntity poCollection = poCollectionService.getById(id);
+        List<PoCollectionEntity> List = poCollectionService.list(new QueryWrapper<PoCollectionEntity>().eq(
+                "user_id", id));
+        List<Long> acticleIdList = new ArrayList<Long>();
 
-        return R.ok().put("poCollection", poCollection);
+        for (PoCollectionEntity poCollectionEntity : List) {
+            acticleIdList.add(poCollectionEntity.getArticleId());
+        }
+        Collection<PoArticleEntity> poArticleEntities = poArticleService.listByIds(acticleIdList);
+
+        return R.ok().put("content", poArticleEntities);
     }
 
     /**
@@ -78,8 +90,8 @@ public class PoCollectionController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids){
-        poCollectionService.removeByIds(Arrays.asList(ids));
+    public R delete(@RequestBody Map map){
+        poCollectionService.removeByMap(map);
 
         return R.ok();
     }

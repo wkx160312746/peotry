@@ -6,11 +6,7 @@ import java.util.Map;
 import io.renren.common.validator.ValidatorUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.renren.modules.po_plan.entity.PoPlanEntity;
 import io.renren.modules.po_plan.service.PoPlanService;
@@ -56,8 +52,9 @@ public class PoPlanController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody PoPlanEntity poPlan){
+        System.out.println("11");
         poPlanService.save(poPlan);
 
         return R.ok();
@@ -67,7 +64,6 @@ public class PoPlanController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("po_plan:poplan:update")
     public R update(@RequestBody PoPlanEntity poPlan){
         ValidatorUtils.validateEntity(poPlan);
         poPlanService.updateById(poPlan);
@@ -79,7 +75,6 @@ public class PoPlanController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("po_plan:poplan:delete")
     public R delete(@RequestBody Long[] ids){
         poPlanService.removeByIds(Arrays.asList(ids));
 

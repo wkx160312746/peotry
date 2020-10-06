@@ -27,7 +27,7 @@ public class PoPlanEntity implements Serializable {
 	/**
 	 * 开始时间
 	 */
-	private Date startTime;
+	private String startTime;
 	/**
 	 * 地点
 	 */
@@ -43,6 +43,6 @@ public class PoPlanEntity implements Serializable {
 	/**
 	 * 预估时间
 	 */
-	private Date time;
+	private String time;
 
 }

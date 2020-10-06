@@ -1,9 +1,12 @@
 package io.renren.modules.po_comment.controller;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.renren.common.validator.ValidatorUtils;
+import io.renren.modules.po_area.entity.PoAreaEntity;
+import io.renren.modules.sys.entity.SysUserEntity;
+import io.renren.modules.sys.service.SysUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +35,9 @@ public class PoCommentController {
     @Autowired
     private PoCommentService poCommentService;
 
+    @Autowired
+    private SysUserService sysUserService;
+
     /**
      * 列表
      */
@@ -47,18 +53,27 @@ public class PoCommentController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("po_comment:pocomment:info")
     public R info(@PathVariable("id") Long id){
-        PoCommentEntity poComment = poCommentService.getById(id);
 
-        return R.ok().put("poComment", poComment);
+        List<PoCommentEntity> commentEntityList = poCommentService.list(new QueryWrapper<PoCommentEntity>()
+                .eq("article_id", id).eq("stutas","1"));
+        List<Object> list = new ArrayList<>();
+
+        for (PoCommentEntity poCommentEntity : commentEntityList) {
+            Map<Object, Object> map = new HashMap<>();
+            map.put("commentInfo",poCommentEntity);
+            SysUserEntity sysUserEntity = sysUserService.getById(poCommentEntity.getUserId());
+            System.out.println(sysUserEntity);
+            map.put("username",sysUserEntity.getUsername());
+            list.add(map);
+        }
+        return R.ok().put("content", commentEntityList);
     }
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("po_comment:pocomment:save")
     public R save(@RequestBody PoCommentEntity poComment){
         poCommentService.save(poComment);
 
@@ -69,7 +84,6 @@ public class PoCommentController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("po_comment:pocomment:update")
     public R update(@RequestBody PoCommentEntity poComment){
         ValidatorUtils.validateEntity(poComment);
         poCommentService.updateById(poComment);
@@ -81,7 +95,6 @@ public class PoCommentController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("po_comment:pocomment:delete")
     public R delete(@RequestBody Long[] ids){
         poCommentService.removeByIds(Arrays.asList(ids));
 

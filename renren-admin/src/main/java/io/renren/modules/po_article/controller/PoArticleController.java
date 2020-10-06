@@ -72,7 +72,7 @@ public class PoArticleController {
     public R info(@PathVariable("id") Long id){
         PoArticleEntity poArticle = poArticleService.getById(id);
 
-        return R.ok().put("poArticle", poArticle);
+        return R.ok().put("content", poArticle);
     }
 
     /**
@@ -151,5 +151,11 @@ public class PoArticleController {
         map.put("error","0");
         map.put("msg", "上传错误");
         return map;
+    }
+
+    @RequestMapping("/upArticle")
+    public R upHtml(@RequestBody Map<String,String> map){
+
+        return R.ok();
     }
 }
