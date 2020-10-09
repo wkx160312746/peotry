@@ -90,8 +90,8 @@ public class DataFilterAspect {
 
         //用户子部门ID列表
         if(dataFilter.subDept()){
-            List<Long> subDeptIdList = sysDeptService.getSubDeptIdList(user.getDeptId());
-            deptIdList.addAll(subDeptIdList);
+//            List<Long> subDeptIdList = sysDeptService.getSubDeptIdList(user.getDeptId());
+//            deptIdList.addAll(subDeptIdList);
         }
 
         StringBuilder sqlFilter = new StringBuilder();

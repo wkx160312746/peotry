@@ -101,7 +101,11 @@ public class PoCommentController {
      */
     @RequestMapping("/delete")
     public R delete(@RequestBody Map map){
-        poCommentService.removeByMap(map);
+        try {
+            poCommentService.removeByMap(map);
+        } catch (Exception e) {
+            return R.error("未知异常,请联系管理员(评论)");
+        }
 
         return R.ok();
     }

@@ -154,14 +154,8 @@ public class PoArticleController {
         return map;
     }
 
-    @RequestMapping("/upArticle")
-    public R upHtml(@RequestBody Map<String,String> map){
-
-        return R.ok();
-    }
-
     /**
-     * 获取分类文章
+     * 获取分类的文章
      * @return
      */
     @RequestMapping("/getClassify")
@@ -180,6 +174,11 @@ public class PoArticleController {
         return R.ok().put("pageList",list);
     }
 
+    /**
+     * 获取分类的排行榜
+     * @param params
+     * @return
+     */
     @RequestMapping("/getRankingList")
     public R getRankingList(@RequestBody Map<String, Object> params){
         String[] name = {"","访名人","探画家","诗中景","画中游"};
@@ -190,5 +189,26 @@ public class PoArticleController {
                         .eq("type", type).orderByDesc("evaluate").last("limit 10"));
 
         return R.ok().put("title",name[type]).put("content",list);
+    }
+
+    @RequestMapping("/upArticle")
+    public R upHtml(@RequestBody Map<String,String> map){
+        // 获取token
+        String html = map.get("html");
+        String title = map.get("title");
+        String typeArticle = map.get("typeArticle");
+
+//        // 富文本
+//        PoArticleEntity article = new PoArticleEntity();
+//        article.set
+//        article.setArticle(html);
+//        article.setPublishTime( new java.sql.Date(new java.util.Date().getTime()));
+//        article.setTypeId(2);
+//        int i = contentService.upArticle(article);
+//        if(i > 0){
+//            return new ResultUtil().setData("发布成功");
+//        }
+//        return new ResultUtil().setData("发布失败");
+        return R.ok();
     }
 }
