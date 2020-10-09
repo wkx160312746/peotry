@@ -61,13 +61,17 @@ public class PoCommentController {
 
         for (PoCommentEntity poCommentEntity : commentEntityList) {
             Map<Object, Object> map = new HashMap<>();
-            map.put("commentInfo",poCommentEntity);
+            map.put("id", poCommentEntity.getId());
+            map.put("content", poCommentEntity.getContent());
+            map.put("content", poCommentEntity.getContent());
+
             SysUserEntity sysUserEntity = sysUserService.getById(poCommentEntity.getUserId());
             System.out.println(sysUserEntity);
             map.put("username",sysUserEntity.getUsername());
+            map.put("headImg",sysUserEntity.getHeadImg());
             list.add(map);
         }
-        return R.ok().put("content", commentEntityList);
+        return R.ok().put("content", list);
     }
 
     @RequestMapping("/getListByArticleId/{id}")

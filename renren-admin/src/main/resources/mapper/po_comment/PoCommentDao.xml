@@ -16,9 +16,11 @@
 
     <select id="getListByArticleId" resultType="map" parameterType="map">
         SELECT
+            a.id id,
+            b.username userName,
+            b.head_img headImg,
             a.create_time createTime
             ,a.content content
-            ,b.username userName
         from po_comment a
             LEFT JOIN sys_user b  on a.user_id=b.user_id
         where a.article_id=#{articleId}
