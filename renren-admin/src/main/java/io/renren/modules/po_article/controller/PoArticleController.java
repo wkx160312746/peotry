@@ -18,6 +18,8 @@ import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.print.DocFlavor;
+
 
 /**
  * 
@@ -154,12 +156,18 @@ public class PoArticleController {
         return map;
     }
 
+    @RequestMapping("/getAll")
+    public R getAll(){
+        List<PoArticleEntity> typeList = poArticleService.list();
+        return R.ok().put("content",typeList);
+    }
     /**
-     * 获取分类的文章
+     * 获取所有分类的文章
      * @return
      */
     @RequestMapping("/getClassify")
     public R getClassify(){
+
         String[] name = {"","访名人","探画家","诗中景","画中游"};
         List<Object> list = new ArrayList<>();
 
@@ -171,8 +179,16 @@ public class PoArticleController {
             list.add(map);
         }
 
-        return R.ok().put("pageList",list);
+        return R.ok().put("content",list);
     }
+
+    @RequestMapping("/getClassify/{type}")
+    public R getClassify(@PathVariable("type") Integer type){
+        List<PoArticleEntity> typeList = poArticleService.list(new QueryWrapper<PoArticleEntity>().eq("type",type));
+        return R.ok().put("content", typeList);
+    }
+
+
 
     /**
      * 获取分类的排行榜
@@ -196,19 +212,16 @@ public class PoArticleController {
         // 获取token
         String html = map.get("html");
         String title = map.get("title");
-        String typeArticle = map.get("typeArticle");
-
+        String introduce = map.get("introduce");
 //        // 富文本
-//        PoArticleEntity article = new PoArticleEntity();
-//        article.set
-//        article.setArticle(html);
-//        article.setPublishTime( new java.sql.Date(new java.util.Date().getTime()));
-//        article.setTypeId(2);
-//        int i = contentService.upArticle(article);
-//        if(i > 0){
-//            return new ResultUtil().setData("发布成功");
-//        }
-//        return new ResultUtil().setData("发布失败");
+        PoArticleEntity article = new PoArticleEntity();
+        article.setIntroduce(introduce);
+        article.setName(title);
+        article.setDetails(html);
+        article.setCreateTime(new Date());
+        article.setCoverImg("http://r6d.cn/nvNW");
+        boolean save = poArticleService.save(article);
+
         return R.ok();
     }
 }

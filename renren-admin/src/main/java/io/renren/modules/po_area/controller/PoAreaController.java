@@ -48,9 +48,8 @@ public class PoAreaController {
      *
      * @return
      */
-    @RequestMapping("/getCityListByProvinceId")
-    public R getProvinceList(@RequestParam Map<String, Object> params) {
-        String provinceId = String.valueOf(params.get("provinceId"));
+    @RequestMapping("/getCityListByProvinceId/{provinceId}")
+    public R getProvinceList(@PathVariable String provinceId) {
         if (StringUtils.isBlank(provinceId) || "null".equals(provinceId)) {
             return R.error("参数为空");
         }

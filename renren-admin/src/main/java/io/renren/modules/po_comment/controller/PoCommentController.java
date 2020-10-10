@@ -114,4 +114,18 @@ public class PoCommentController {
         return R.ok();
     }
 
+    /**
+     * 删除
+     */
+    @RequestMapping("/delete/{id}")
+    public R delete(@PathVariable Integer id){
+        try {
+            poCommentService.removeById(id);
+        } catch (Exception e) {
+            return R.error("未知异常,请联系管理员(评论)");
+        }
+
+        return R.ok();
+    }
+
 }

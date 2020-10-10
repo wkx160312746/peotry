@@ -63,10 +63,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 				.apply(params.get(Constant.SQL_FILTER) != null, (String)params.get(Constant.SQL_FILTER))
 		);
 
-		for(SysUserEntity sysUserEntity : page.getRecords()){
-			SysDeptEntity sysDeptEntity = sysDeptService.getById(sysUserEntity.getDeptId());
-			sysUserEntity.setDeptName(sysDeptEntity.getName());
-		}
+//		for(SysUserEntity sysUserEntity : page.getRecords()){
+//			SysDeptEntity sysDeptEntity = sysDeptService.getById(sysUserEntity.getDeptId());
+//			sysUserEntity.setDeptName(sysDeptEntity.getName());
+//		}
 
 		return new PageUtils(page);
 	}
@@ -92,7 +92,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 			user.setPassword(null);
 		}else{
 			SysUserEntity userEntity = this.getById(user.getUserId());
-			user.setPassword(ShiroUtils.sha256(user.getPassword(), userEntity.getSalt()));
+//			user.setPassword(ShiroUtils.sha256(user.getPassword(), userEntity.getSalt()));
 		}
 		this.updateById(user);
 		
