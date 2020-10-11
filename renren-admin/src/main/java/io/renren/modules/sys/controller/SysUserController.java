@@ -50,6 +50,16 @@ public class SysUserController extends AbstractController {
 		PageUtils page = sysUserService.queryPage(params);
 		return R.ok().put("page", page);
 	}
+
+	/**
+	 * 所有用户列表
+	 */
+	@RequestMapping("/getAll")
+	public R getAll(){
+		List<SysUserEntity> list = sysUserService.list();
+		return R.ok().put("content", list);
+	}
+
 	
 	/**
 	 * 获取登录的用户信息
@@ -64,16 +74,20 @@ public class SysUserController extends AbstractController {
 	 */
 	@SysLog("修改密码")
 	@RequestMapping("/password")
-	public R password(String password, String newPassword){
+	public R password(@RequestBody Map<String,String> map  ){
+		Long userId = Long.valueOf(map.get("uid"));
+		String newPassword = map.get("newPassword");
+		String password = map.get("password");
 		Assert.isBlank(newPassword, "新密码不为能空");
-
+		System.out.println(password+newPassword);
+		SysUserEntity byId = sysUserService.getById(userId);
 		//原密码
-		password = ShiroUtils.sha256(password, getUser().getSalt());
+		password = ShiroUtils.sha256(password, byId.getSalt());
 		//新密码
-		newPassword = ShiroUtils.sha256(newPassword, getUser().getSalt());
+		newPassword = ShiroUtils.sha256(newPassword, byId.getSalt());
 				
 		//更新密码
-		boolean flag = sysUserService.updatePassword(getUserId(), password, newPassword);
+		boolean flag = sysUserService.updatePassword(userId, password, newPassword);
 		if(!flag){
 			return R.error("原密码不正确");
 		}

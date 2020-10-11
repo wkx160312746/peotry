@@ -5,6 +5,7 @@ import java.util.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.renren.common.validator.ValidatorUtils;
 import io.renren.modules.po_area.entity.PoAreaEntity;
+import io.renren.modules.po_plan.entity.PoPlanEntity;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -47,7 +48,15 @@ public class PoCommentController {
 
         return R.ok().put("page", page);
     }
+    /**
+     * 列表
+     */
+    @RequestMapping("/getAll")
+    public R getAll() {
 
+        List<PoCommentEntity> list = poCommentService.list();
+        return R.ok().put("content", list);
+    }
 
     /**
      * 信息

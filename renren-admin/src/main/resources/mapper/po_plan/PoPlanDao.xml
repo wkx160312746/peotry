@@ -12,6 +12,19 @@
         <result property="traffic" column="traffic"/>
         <result property="time" column="time"/>
     </resultMap>
+    <select id="getList" resultType="map" parameterType="map">
+        SELECT
+            a.id id,
+            b.username username,
+            b.user_id uid,
+           a.start_time startTime,
+            a.site site
+            ,a.traffic traffic,
+            a.time time
+        from po_plan a
+            LEFT JOIN sys_user b  on a.uid=b.user_id
 
+
+    </select>
 
 </mapper>

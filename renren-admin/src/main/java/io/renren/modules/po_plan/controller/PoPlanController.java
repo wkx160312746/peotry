@@ -1,8 +1,10 @@
 package io.renren.modules.po_plan.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.renren.common.validator.ValidatorUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +36,21 @@ public class PoPlanController {
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = poPlanService.queryPage(params);
-
         return R.ok().put("page", page);
+    }
+
+    /**
+     * 列表
+     */
+    @RequestMapping("/getAll")
+    public R getAll() {
+        return poPlanService.getList();
+    }
+
+    @RequestMapping("/getAll/{uid}")
+    public R getAll(@PathVariable Long uid){
+        List<PoPlanEntity> list = poPlanService.list(new QueryWrapper<PoPlanEntity>().eq("uid", uid));
+        return R.ok().put("content", list);
     }
 
 

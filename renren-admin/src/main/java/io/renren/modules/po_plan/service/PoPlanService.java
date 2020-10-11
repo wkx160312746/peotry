@@ -2,6 +2,7 @@ package io.renren.modules.po_plan.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.renren.common.utils.PageUtils;
+import io.renren.common.utils.R;
 import io.renren.modules.po_plan.entity.PoPlanEntity;
 
 import java.util.Map;
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface PoPlanService extends IService<PoPlanEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    R getList();
 }
 

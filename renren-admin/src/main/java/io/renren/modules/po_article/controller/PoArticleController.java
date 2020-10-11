@@ -207,19 +207,36 @@ public class PoArticleController {
         return R.ok().put("title",name[type]).put("content",list);
     }
 
+    @RequestMapping("/getRankingList/{id}")
+    public R getRankingList(@PathVariable Integer id){
+        String[] name = {"","访名人","探画家","诗中景","画中游"};
+        List<PoArticleEntity> list =
+                poArticleService.list(new QueryWrapper<PoArticleEntity>()
+                        .eq("type", id).orderByDesc("evaluate").last("limit 10"));
+
+        return R.ok().put("title",name[id]).put("content",list);
+    }
+    @RequestMapping("/getArea/{areaId}")
+    public R getArea(@PathVariable Integer areaId){
+        List<PoArticleEntity> list = poArticleService.list(new QueryWrapper<PoArticleEntity>().eq("area_id",
+                areaId));
+        return R.ok().put("content", list);
+    }
     @RequestMapping("/upArticle")
     public R upHtml(@RequestBody Map<String,String> map){
         // 获取token
         String html = map.get("html");
         String title = map.get("title");
         String introduce = map.get("introduce");
+        String coverImg = map.get("coverImg");
+
 //        // 富文本
         PoArticleEntity article = new PoArticleEntity();
         article.setIntroduce(introduce);
+        article.setCoverImg(coverImg);
         article.setName(title);
         article.setDetails(html);
         article.setCreateTime(new Date());
-        article.setCoverImg("http://r6d.cn/nvNW");
         boolean save = poArticleService.save(article);
 
         return R.ok();
